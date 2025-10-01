@@ -348,14 +348,38 @@
                 </a>
             </div>
         </div>
-        
-        <a href="/BoraSimsek_Portfolio/assets/cv/BoraSimsek_CS.pdf" 
-            class="download-btn"
-            download
-            target="_blank"
-            rel="noopener">
-            <i class="fas fa-download"></i> Download CV
-        </a> <!-- CV indirme butonu -->
+                
+        <a id="download-cv"
+        href="/BoraSimsek_Portfolio/portfolio/assets/cv/BoraSimsek_CS.pdf"
+        class="download-btn"
+        target="_blank" rel="noopener">
+        <i class="fas fa-download"></i> Download CV
+        </a>
+
+        <script>
+        document.getElementById('download-cv').addEventListener('click', async function(e){
+        e.preventDefault();
+        const url = this.getAttribute('href');
+        try {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const blob = await res.blob();
+            const blobUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = 'BoraSimsek_CS.pdf';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(blobUrl);
+        } catch (err) {
+            console.error('CV indirilemedi:', err);
+            // fallback: yeni sekmede aç
+            window.open(url, '_blank', 'noopener');
+            alert('İndirilemedi, PDF yeni sekmede açıldı. Konsolu kontrol et.');
+        }
+        });
+        </script>
     </aside>
 
     <!-- Sağ panel -->
